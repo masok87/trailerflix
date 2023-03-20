@@ -23,7 +23,7 @@ function App() {
     movies.map((movie) => <MovieCard key={movie.id} movie={movie} />);
   return (
     <div className="App">
-      <h1>Heloo Trailerflix</h1>
+      <h1>This is our TrailerFlix</h1>
       <div className="container">{renderMovies()}</div>
     </div>
   );
