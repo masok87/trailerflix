@@ -32,7 +32,7 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>This is our TrailerFlix</h1>
+        <h1>This is our TrailerFlixx</h1>
 
         <form onSubmit={searchMovies}>
           <input type="text" onChange={(e) => setSearchKey(e.target.value)} />
