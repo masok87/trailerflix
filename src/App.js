@@ -4,6 +4,7 @@ import axios from 'axios'
 import Movie from "./components/MovieCard"
 import Youtube from 'react-youtube'
 import YouTube from "react-youtube"
+import logo from './trailerlogo.png';
 
 function App() {
     const MOVIE_API = "https://api.themoviedb.org/3/"
@@ -77,34 +78,18 @@ function App() {
         ))
     )
 
-    // const renderTrailer = () => {
-    //   const trailer = selectMovie.videos.results.find(vid => vid.name === `Official Trailer`)
-    //   const key = trailer ? trailer.key : selectMovie.videos.results[0].key
-
-    //   return (
-    //     <YouTube
-    //     videoId={key}
-    //     containerClassName={"youtube-container"}
-    //     opts={
-    //       {
-    //         width: "100%",
-    //         height: "100%",
-    //         playerVars: {
-    //           autoplay: 1,
-    //           controls: 0
-    //         }
-    //       }}
-    //     />
-    //   )
-    // }
 
     return (
         <div className="App">
             <header className="center-max-size header">
-                <span className={"brand"}>TrailerFlix</span>
+                <span className={"brand"}> 
+    <div>
+      <img src={logo} alt="Logo" />
+    </div>
+                 </span>
                 <form className="form" onSubmit={fetchMovies}>
-                    <input className="search" type="text" id="search"
-                           onInput={(event) => setSearchKey(event.target.value)}/>
+                   <input className="search" type="text" id="search"
+                           onInput={(event) => setSearchKey(event.target.value)}/> Search 
                     <button className="submit-search" type="submit"><i className="fa fa-search"></i></button>
                 </form>
             </header>
