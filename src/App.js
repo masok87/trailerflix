@@ -9,6 +9,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState({});
   const [searchKey, setSearchKey] = useState("");
+  console.log(IMAGE_PATH);
 
   const fetchMovies = async (searchKey) => {
     const type = searchKey ? "search" : "discover";
