@@ -27,13 +27,17 @@ function App() {
   useEffect(() => {
     fetchMovies();
   }, []);
+
   const renderMovies = () =>
-    movies.map((movie) => <MovieCard key={movie.id} movie={movie} />);
+    movies.map((movie) => (
+      <MovieCard key={movie.id} movie={movie} selectMovie={setSelectedMovie} />
+    ));
 
   const searchMovies = (e) => {
     e.preventDefault();
     fetchMovies(searchKey);
   };
+
   return (
     <div className="App">
       <header className={"header"}>
@@ -48,9 +52,9 @@ function App() {
       </header>
 
       <div
-        className={"hero"}
+        className="hero"
         style={{
-          backgoundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`,
+          backgroundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`,
         }}
       >
         <div className="hero-content max-center">
