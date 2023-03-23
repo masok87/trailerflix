@@ -50,7 +50,7 @@ function App() {
 
   const renderMovies = () =>
     movies.map((movie) => (
-      <MovieCard key={movie.id} movie={movie} selectMovie={setSelectedMovie} />
+      <MovieCard key={movie.id} movie={movie} selectMovie={selectMovie} />
     ));
 
   const searchMovies = (e) => {
