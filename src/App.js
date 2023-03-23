@@ -31,7 +31,7 @@ function App() {
     const { data } = await axios.get(`${API_URL}/movie/${id}`, {
       params: {
         api_key: process.REACT_APP_MOVIE_API_KEY,
-        append_to_response: "videos",
+        append_to_response: `videos`,
       },
     });
 
@@ -40,6 +40,7 @@ function App() {
 
   const selectMovie = async (movie) => {
     const data = await fetchMovie(movie.id);
+    console.log(data);
     setSelectedMovie(movie);
   };
 
@@ -58,14 +59,12 @@ function App() {
   };
 
   const renderTrailer = () => {
-    const trailer = selectedMovie.videos.results.find(vid => vid.name === 'Official Trailer')
+    const trailer = selectedMovie.videos.results.find(
+      (vid) => vid.name === "Official Trailer"
+    );
 
-    return (
-      <YouTube
-          videoId={trailer.key}
-      />    
-    )
-  }
+    return <YouTube videoId={trailer.key} />;
+  };
 
   return (
     <div className="App">
