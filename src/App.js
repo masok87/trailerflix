@@ -74,7 +74,7 @@ function App() {
         opts={{
           width: "100%",
           height: "500px",
-          playerVars: { autoplay: 1, controls: 0 },
+          playerVars: { autoplay: 1, controls: 0, rel: 0 },
         }}
       />
     );
