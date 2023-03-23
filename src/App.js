@@ -10,7 +10,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState({});
   const [searchKey, setSearchKey] = useState("");
-  console.log(IMAGE_PATH);
+  const [playTrailer, setPlayerTrailer] = useState(false);
 
   const fetchMovies = async (searchKey) => {
     const type = searchKey ? "search" : "discover";
@@ -22,15 +22,15 @@ function App() {
         query: searchKey,
       },
     });
+    await selectMovie(results[0]);
 
-    setSelectedMovie(results[0]);
     setMovies(results);
   };
 
   const fetchMovie = async (id) => {
     const { data } = await axios.get(`${API_URL}/movie/${id}`, {
       params: {
-        api_key: process.REACT_APP_MOVIE_API_KEY,
+        api_key: process.env.REACT_APP_MOVIE_API_KEY,
         append_to_response: `videos`,
       },
     });
@@ -70,7 +70,7 @@ function App() {
     <div className="App">
       <header className={"header"}>
         <div className={"header-content max-center"}>
-          <span>This is our TrailerFlixx</span>
+          <span>This is our TrailerFlix</span>
 
           <form onSubmit={searchMovies}>
             <input type="text" onChange={(e) => setSearchKey(e.target.value)} />
@@ -86,8 +86,11 @@ function App() {
         }}
       >
         <div className="poster-content max-center">
-          {selectedMovie.videos ? renderTrailer() : null}
-          <button className={"button"}>Play Trailer</button>
+          {selectedMovie.videos && playTrailer ? renderTrailer() : null}
+          <button className={"button"} onClick={() => setPlayerTrailer(true)}>
+            Play Trailer
+          </button>
+
           <h1 className={"poster-title"}>{selectedMovie.title}</h1>
           {selectedMovie.overview ? (
             <p className={"poster-overview"}>{selectedMovie.overview}</p>
