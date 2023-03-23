@@ -3,9 +3,10 @@ import axios from "axios";
 import "./App.css";
 import MovieCard from "./components/MovieCard";
 import YouTube from "react-youtube";
+import logo from "./trailerlogo.png";
 
 function App() {
-  const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
+  const IMAGE_PATH = "https://image.tmdb.org/t/p/original/";
   const API_URL = "https://api.themoviedb.org/3";
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState({});
@@ -27,6 +28,11 @@ function App() {
     setMovies(results);
   };
 
+  useEffect(() => {
+    fetchMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const fetchMovie = async (id) => {
     const { data } = await axios.get(`${API_URL}/movie/${id}`, {
       params: {
@@ -39,40 +45,46 @@ function App() {
   };
 
   const selectMovie = async (movie) => {
+    setPlayerTrailer(false);
     const data = await fetchMovie(movie.id);
-    console.log(data);
-    setSelectedMovie(movie);
+    setSelectedMovie(data);
+    handleClickScroll();
   };
-
-  useEffect(() => {
-    fetchMovies();
-  
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const renderMovies = () =>
-    movies.map((movie) => (
-      <MovieCard key={movie.id} movie={movie} selectMovie={selectMovie} />
-    ));
 
   const searchMovies = (e) => {
     e.preventDefault();
     fetchMovies(searchKey);
   };
 
-  const renderTrailer = () => {
-    const trailer = selectedMovie.videos.results.find(
-      (vid) => vid.name === "Official Trailer"
-    );
+  const handleClickScroll = () => {
+    const element = document.getElementById("top-of-page");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
-    return <YouTube videoId={trailer.key} />;
+  const renderTrailer = () => {
+    const trailer = selectedMovie?.videos?.results?.find((vid) => vid?.name === "Official Trailer");
+    const trailerKey = trailer ? trailer.key : selectedMovie?.videos?.results[1].key;
+
+    return (
+      <YouTube
+        videoId={trailerKey}
+        containerClassName={"youtube-container"}
+        opts={{
+          width: "100%",
+          height: "500px",
+          playerVars: { autoplay: 1, controls: 0 },
+        }}
+      />
+    );
   };
 
   return (
     <div className="App">
-      <header className={"header"}>
+      <header className={"header"} id={"top-of-page"}>
         <div className={"header-content max-center"}>
-          <span>This is our TrailerFlix</span>
+          <img src={logo} alt="logo" />
 
           <form onSubmit={searchMovies}>
             <input type="text" onChange={(e) => setSearchKey(e.target.value)} />
@@ -81,26 +93,35 @@ function App() {
         </div>
       </header>
 
-      <div
-        className="poster"
-        style={{
-          backgroundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`,
-        }}
-      >
-        <div className="poster-content max-center">
-          {selectedMovie.videos && playTrailer ? renderTrailer() : null}
-          <button className={"button"} onClick={() => setPlayerTrailer(true)}>
-            Play Trailer
-          </button>
-
-          <h1 className={"poster-title"}>{selectedMovie.title}</h1>
-          {selectedMovie.overview ? (
-            <p className={"poster-overview"}>{selectedMovie.overview}</p>
-          ) : null}
+      {selectedMovie && (
+        <div
+          className="poster"
+          style={{
+            backgroundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`,
+          }}
+        >
+          <div className="poster-content max-center">
+            <h1 className={"poster-title"}>{selectedMovie.title}</h1>
+            {selectedMovie.overview ? <p className={"poster-overview"}>{selectedMovie.overview}</p> : null}
+            {selectedMovie.videos && playTrailer ? renderTrailer() : null}
+            {playTrailer ? (
+              <button className={"button"} onClick={() => setPlayerTrailer(false)}>
+                Close
+              </button>
+            ) : (
+              <button className={"button"} onClick={() => setPlayerTrailer(true)}>
+                Play Trailer
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="container max-center">{renderMovies()}</div>
+      <div className="container max-center">
+        {movies.map((movie) => (
+          <MovieCard key={movie.id} movie={movie} selectMovie={selectMovie} />
+        ))}
+      </div>
     </div>
   );
 }

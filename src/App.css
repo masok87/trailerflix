@@ -18,10 +18,13 @@ body {
 .container {
   padding: 15px;
   background-color: black;
-
   display: grid;
   gap: 15px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.movie-card {
+  cursor: pointer;
 }
 
 .movie-cover {
@@ -38,16 +41,18 @@ body {
 }
 
 .poster {
+  position: relative;
   min-height: 500px;
   background-position: top center;
   background-size: cover;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .poster-content {
   max-width: 70%;
   padding-bottom: 60px;
+  padding-top: 60px;
 }
 
 .poster-title {
@@ -62,4 +67,12 @@ body {
   outline: none;
   padding: 10px 15px;
   cursor: pointer;
+}
+
+.youtube-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
