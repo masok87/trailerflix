@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 import MovieCard from "./components/MovieCard";
+import YouTube from "react-youtube";
 
 function App() {
   const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
@@ -25,6 +26,23 @@ function App() {
     setSelectedMovie(results[0]);
     setMovies(results);
   };
+
+  const fetchMovie = async (id) => {
+    const { data } = await axios.get(`${API_URL}/movie/${id}`, {
+      params: {
+        api_key: process.REACT_APP_MOVIE_API_KEY,
+        append_to_response: "videos",
+      },
+    });
+
+    return data;
+  };
+
+  const selectMovie = async (movie) => {
+    const data = await fetchMovie(movie.id);
+    setSelectedMovie(movie);
+  };
+
   useEffect(() => {
     fetchMovies();
   }, []);
@@ -38,6 +56,16 @@ function App() {
     e.preventDefault();
     fetchMovies(searchKey);
   };
+
+  const renderTrailer = () => {
+    const trailer = selectedMovie.videos.results.find(vid => vid.name === 'Official Trailer')
+
+    return (
+      <YouTube
+          videoId={trailer.key}
+      />    
+    )
+  }
 
   return (
     <div className="App">
@@ -53,16 +81,17 @@ function App() {
       </header>
 
       <div
-        className="hero"
+        className="poster"
         style={{
           backgroundImage: `url('${IMAGE_PATH}${selectedMovie.backdrop_path}')`,
         }}
       >
-        <div className="hero-content max-center">
+        <div className="poster-content max-center">
+          {selectedMovie.videos ? renderTrailer() : null}
           <button className={"button"}>Play Trailer</button>
-          <h1 className={"hero-title"}>{selectedMovie.title}</h1>
+          <h1 className={"poster-title"}>{selectedMovie.title}</h1>
           {selectedMovie.overview ? (
-            <p className={"hero-overview"}>{selectedMovie.overview}</p>
+            <p className={"poster-overview"}>{selectedMovie.overview}</p>
           ) : null}
         </div>
       </div>

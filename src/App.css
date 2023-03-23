@@ -37,7 +37,7 @@ body {
   align-items: center;
 }
 
-.hero {
+.poster {
   min-height: 500px;
   background-position: top center;
   background-size: cover;
@@ -45,12 +45,12 @@ body {
   align-items: flex-end;
 }
 
-.hero-content {
+.poster-content {
   max-width: 70%;
   padding-bottom: 60px;
 }
 
-.hero-title {
+.poster-title {
   font-size: 72px;
   margin: 0;
 }
